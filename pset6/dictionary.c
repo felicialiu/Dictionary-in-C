@@ -40,10 +40,30 @@ bool check(const char* word)
  */
 bool load(const char* dictionary)
 {
-    // TODO
+    // doing
+    char word[];
+    fscanf(dictionary, "%s\n", word);
+    // For each word in the dictionary, hash it and add it to the hash table
+    while(word != EOF) {
+        int index = hash(word);
+        if(hashtable[index] == NULL) {
+            hashtable[index] = malloc(sizeof(node));
+            node->word = word;
+        } else {
+            node currentNode = hashtable[index];
+            
+        }
+        fscanf(dictionary, "%s\n", word);
+    }
     return false;
 }
 
+/**
+ * Returns an integer which is the result of hashing the given word
+ */
+int hash(char[] word) {
+    return 0;
+}
 /**
  * Returns number of words in dictionary if loaded else 0 if not yet loaded.
  */
