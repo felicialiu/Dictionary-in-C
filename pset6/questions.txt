@@ -1,9 +1,17 @@
-0.  TODO
-1.  TODO
-2.  TODO
+0.  an artificial long word said to mean a lung disease caused by inhaling very
+    fine ash and sand dust
+1.  gets resource usage
+2.  16
 3.  TODO
-4.  TODO
-5.  TODO
+4.  It reads in a character at a time, and as long as the character is alphabet
+    ic or an apostrophe, it will be added to the 'current word'. If the index 
+    is getting too long, speller will continue reading in characters, but will
+    not save them. If the word contains a digit, it will also not be saved.
+    If the word has ended, speller will check whether it is in the dictionary.
+5.  Using fscanf() alone will read in a whole word split on spaces. These words
+    may contain numbers or may be too long. This would need to be checked after
+    reading in the whole word. Checking these conditions during reading in is
+    more efficient.
 6.  TODO
 7.  TODO
 8.  TODO

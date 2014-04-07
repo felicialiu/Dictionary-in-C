@@ -12,11 +12,26 @@
 #include "dictionary.h"
 
 /**
+ * Defines the struct node to be used in a linked list datastructure
+ */
+ typedef struct node {
+    char word[LENGTH+1];
+    struct node* next;
+ } 
+ node;
+ 
+/**
+ * Defines the hash table to be an array of nodes
+ */
+node* hashtable[4000];
+
+/**
  * Returns true if word is in dictionary else false.
  */
 bool check(const char* word)
 {
-    // TODO
+    
+    // to do do
     return false;
 }
 
