@@ -8,6 +8,10 @@
  ***************************************************************************/
 
 #include <stdbool.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <ctype.h>
+#include <string.h>
 
 #include "dictionary.h"
 
@@ -36,34 +40,44 @@ bool check(const char* word)
 }
 
 /**
+ * Returns an integer which is the result of hashing the given word
+ */
+int hash(char word[]) {
+    return 0;
+}
+
+/**
  * Loads dictionary into memory.  Returns true if successful else false.
  */
 bool load(const char* dictionary)
 {
     // doing
-    char word[];
-    fscanf(dictionary, "%s\n", word);
-    // For each word in the dictionary, hash it and add it to the hash table
-    while(word != EOF) {
-        int index = hash(word);
-        if(hashtable[index] == NULL) {
-            hashtable[index] = malloc(sizeof(node));
-            node->word = word;
-        } else {
-            node currentNode = hashtable[index];
-            
-        }
-        fscanf(dictionary, "%s\n", word);
+    FILE *fp;
+    fp = fopen(dictionary, "r");
+    if (fp == NULL) {
+        printf("Help null file\n");
+        return false;
     }
-    return false;
+    char word[LENGTH+1];
+    
+    // For each word in the dictionary, hash it and add it to the hash table
+    while(fscanf(fp, "%s\n", word) != EOF) {
+        int index = hash(word);
+        node* newLemma = malloc(sizeof(node));
+        //newLemma->word = malloc(strlen(word)) + 1;
+        strcpy(newLemma->word, word);
+        if(hashtable[index] == NULL) {
+            hashtable[index] = newLemma;
+        } else {
+            node* currentNode = hashtable[index];
+            newLemma->next = currentNode;            
+        }
+        fscanf(fp, "%s\n", word);
+    }
+    printf("all ok?\n");
+    return true;
 }
 
-/**
- * Returns an integer which is the result of hashing the given word
- */
-int hash(char[] word) {
-    return 0;
-}
 /**
  * Returns number of words in dictionary if loaded else 0 if not yet loaded.
  */
