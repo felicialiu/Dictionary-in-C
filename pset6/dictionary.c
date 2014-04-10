@@ -19,7 +19,7 @@
  * Defines the struct node to be used in a linked list datastructure
  */
  typedef struct node {
-    char word[LENGTH+1];
+    char* word;
     struct node* next;
  } 
  node;
@@ -27,23 +27,43 @@
 /**
  * Defines the hash table to be an array of nodes
  */
-node* hashtable[4000];
+node* hashTable[4000];
+
+/**
+ * Number of filled entries in the hash table
+ */
+ int count = 0;
+
+/**
+ * Returns an integer which is the result of hashing the given word
+ */
+int hash(const char* word) {
+    return 0;
+}
 
 /**
  * Returns true if word is in dictionary else false.
  */
 bool check(const char* word)
 {
-    
-    // to do do
+    int index = hash(word);
+    node* temp = hashTable[index];
+    while (!strcmp(temp->word, word)) {
+        temp = temp->next;
+        if (temp == NULL) {
+            return false;
+        }   
+    }
+    return true;
+    /*
+    do {
+        strcpy(hashedWord, hashTable[index]->word);
+        if(strcmp(hashedWord, word)) {
+            return true;
+        }
+    } while(!strcmp(hashedWord, word));
     return false;
-}
-
-/**
- * Returns an integer which is the result of hashing the given word
- */
-int hash(char word[]) {
-    return 0;
+    */
 }
 
 /**
@@ -55,7 +75,7 @@ bool load(const char* dictionary)
     FILE *fp;
     fp = fopen(dictionary, "r");
     if (fp == NULL) {
-        printf("Help null file\n");
+        printf("Specified file name could not be opened\n");
         return false;
     }
     char word[LENGTH+1];
@@ -63,18 +83,20 @@ bool load(const char* dictionary)
     // For each word in the dictionary, hash it and add it to the hash table
     while(fscanf(fp, "%s\n", word) != EOF) {
         int index = hash(word);
+        printf("index : %i\n", index);
         node* newLemma = malloc(sizeof(node));
-        //newLemma->word = malloc(strlen(word)) + 1;
+        newLemma->word = malloc(strlen(word) + 1);
         strcpy(newLemma->word, word);
-        if(hashtable[index] == NULL) {
-            hashtable[index] = newLemma;
+        if(hashTable[index] == NULL) {
+            hashTable[index] = newLemma;
+            count++;
         } else {
-            node* currentNode = hashtable[index];
+            node* currentNode = hashTable[index];
             newLemma->next = currentNode;            
         }
         fscanf(fp, "%s\n", word);
     }
-    printf("all ok?\n");
+    printf("all ok? done reading the dict file\n");
     return true;
 }
 
@@ -83,15 +105,21 @@ bool load(const char* dictionary)
  */
 unsigned int size(void)
 {
-    // TODO
-    return 0;
+    return count;
 }
 
 /**
  * Unloads dictionary from memory.  Returns true if successful else false.
  */
 bool unload(void)
-{
-    // TODO
-    return false;
+{   
+    for (int i = 0; i < 4000; i++) {
+        node* cursor = hashTable[i];
+        while (cursor != NULL) {
+            node* temp = cursor;
+            cursor = cursor->next;
+            free(temp);
+        }
+    }
+    return true;
 }
