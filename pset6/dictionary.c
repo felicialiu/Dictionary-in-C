@@ -45,14 +45,21 @@ int hash(const char* word) {
  * Returns true if word is in dictionary else false.
  */
 bool check(const char* word)
-{
-    int index = hash(word);
+{   
+    char lowerLetter;
+    char hashableWord[strlen(word)];
+    for (int i = 0; i < strlen(word); i++) {
+        lowerLetter = tolower(word[i]);
+        hashableWord[i] = (char) lowerLetter;
+    }
+    hashableWord[strlen(word)] = '\0';
+    int index = hash(hashableWord);
     node* temp = hashTable[index];
-    while (!strcmp(temp->word, word)) {
-        temp = temp->next;
-        if (temp == NULL) {
+    while (strcmp(temp->word, hashableWord)) {
+        if (temp->next == NULL) {
             return false;
-        }   
+        }
+        temp = temp->next;
     }
     return true;
     /*
@@ -83,20 +90,23 @@ bool load(const char* dictionary)
     // For each word in the dictionary, hash it and add it to the hash table
     while(fscanf(fp, "%s\n", word) != EOF) {
         int index = hash(word);
-        printf("index : %i\n", index);
+        //printf("index : %i\n", index);
         node* newLemma = malloc(sizeof(node));
         newLemma->word = malloc(strlen(word) + 1);
         strcpy(newLemma->word, word);
         if(hashTable[index] == NULL) {
             hashTable[index] = newLemma;
-            count++;
+            newLemma->next = NULL;
         } else {
             node* currentNode = hashTable[index];
-            newLemma->next = currentNode;            
+            newLemma->next = currentNode;
+            hashTable[index] = newLemma;            
         }
-        fscanf(fp, "%s\n", word);
+        //fscanf(fp, "%s\n", word);
+        count++;
     }
-    printf("all ok? done reading the dict file\n");
+    //printf("all ok? done reading the dict file\n");
+    fclose(fp);
     return true;
 }
 
@@ -118,6 +128,7 @@ bool unload(void)
         while (cursor != NULL) {
             node* temp = cursor;
             cursor = cursor->next;
+            free(temp->word);
             free(temp);
         }
     }
