@@ -25,21 +25,43 @@
  node;
  
 /**
- * Defines the hash table to be an array of nodes
+ * Defines the hash table to be an array of nodes whose size is a primitive
  */
-node* hashTable[4000];
+node* hashTable[4021];
 
 /**
  * Number of filled entries in the hash table
  */
  int count = 0;
+ 
+ /**
+  * Takes in two arguments a and b and returns a to the power of b
+  */
+int power(int a, int b) {
+    int result = 1;
+    for (int i = 0; i < b; i++) {
+        result *= a;
+    }
+    return result;
+}
 
 /**
  * Returns an integer which is the result of hashing the given word
  */
-int hash(const char* word) {
-    return 0;
+
+
+unsigned int hash(const char* word) {
+    int hashed = 0;
+    int charNum = 0;
+    for (int i = 0; i < strlen(word)-1; i++) {
+        charNum = (int) word[i];
+        hashed += charNum*31;
+    }
+    return hashed % 4021;
+    
+    //return 0;
 }
+
 
 /**
  * Returns true if word is in dictionary else false.
@@ -54,7 +76,11 @@ bool check(const char* word)
     }
     hashableWord[strlen(word)] = '\0';
     int index = hash(hashableWord);
+   //  printf("checking word index : %i\n", index);
     node* temp = hashTable[index];
+    if (temp == NULL) {
+        return false;
+    }
     while (strcmp(temp->word, hashableWord)) {
         if (temp->next == NULL) {
             return false;
@@ -90,7 +116,7 @@ bool load(const char* dictionary)
     // For each word in the dictionary, hash it and add it to the hash table
     while(fscanf(fp, "%s\n", word) != EOF) {
         int index = hash(word);
-        //printf("index : %i\n", index);
+        //printf("loading dict index : %i\n", index);
         node* newLemma = malloc(sizeof(node));
         newLemma->word = malloc(strlen(word) + 1);
         strcpy(newLemma->word, word);
@@ -123,7 +149,7 @@ unsigned int size(void)
  */
 bool unload(void)
 {   
-    for (int i = 0; i < 4000; i++) {
+    for (int i = 0; i < 4021; i++) {
         node* cursor = hashTable[i];
         while (cursor != NULL) {
             node* temp = cursor;

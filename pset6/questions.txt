@@ -1,19 +1,25 @@
-0.  an artificial long word said to mean a lung disease caused by inhaling very
+1.  an artificial long word said to mean a lung disease caused by inhaling very
     fine ash and sand dust
-1.  gets resource usage
-2.  16
-3.  TODO
-4.  It reads in a character at a time, and as long as the character is alphabet
+2.  gets resource usage
+3.  16
+4.  getrusage wants a pointer value, not an actual value.
+5.  It reads in a character at a time, and as long as the character is alphabet
     ic or an apostrophe, it will be added to the 'current word'. If the index 
     is getting too long, speller will continue reading in characters, but will
     not save them. If the word contains a digit, it will also not be saved.
     If the word has ended, speller will check whether it is in the dictionary.
-5.  Using fscanf() alone will read in a whole word split on spaces. These words
+6.  Using fscanf() alone will read in a whole word split on spaces. These words
     may contain numbers or may be too long. This would need to be checked after
     reading in the whole word. Checking these conditions during reading in is
     more efficient.
-6.  TODO
-7.  TODO
-8.  TODO
-9.  TODO
-10. TODO
+~~~
+1.  I used a hash table. Each entry in the hash table contained a node structure.
+    Each node has two member variables, 'word' to store one char array to 
+    represent the words, and 'next' to store a pointer linking to the next node.
+    This linked node structure forms a linked list and enables chaining.
+2.  9s for austinpowers.txt and a hash function that always returns 0.
+3.  I tried to implement a better hash function that reduced the time to process
+    austinpowers.txt to 0.12 seconds by using primitive numbers and adding
+    characters
+4.  It still doesn't work as fast as the staff's solution, therefore the hash
+    function needs to be improved.
