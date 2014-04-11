@@ -177,7 +177,7 @@ int main(int argc, char* argv[])
     printf("TIME IN unload:       %.2f\n", ti_unload);
     printf("TIME IN TOTAL:        %.2f\n\n", 
      ti_load + ti_check + ti_size + ti_unload);
-
+    
     // that's all folks
     return 0;
 }
