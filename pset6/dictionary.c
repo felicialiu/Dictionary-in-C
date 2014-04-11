@@ -53,16 +53,26 @@ int power(int a, int b) {
  * Returns an integer which is the result of hashing the given word
  * Hashing method adds the numeric value of the characters and takes the
  * modulo hash table size of them.
+ * Idea for this hash function from:
+ * http://computinglife.wordpress.com/2008/11/20/why-do-hash-functions-use-prime-numbers/
  */
 unsigned int hash(const char* word) {
     int hashed = 0;
     int charNum = 0;
     for (int i = 0; i < strlen(word); i++) {
         charNum = (int) word[i];
-        hashed = hashed + charNum*pow(31, i);
+        hashed = hashed + charNum*pow(31, strlen(word) - 1 - i);
     }
-    return (hashed % 4021);
+    hashed = hashed % 4021;
     
+    // Sometimes the modulus operator can return negative values
+    // make sure all values returned are nonnegative
+    if(hashed < 0) {
+        return hashed*-1;
+    } else {
+        return hashed;
+    }
+    // return hashed;
     //return 0;
 }
 

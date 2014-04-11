@@ -20,6 +20,7 @@
 2.  9s for austinpowers.txt and a hash function that always returns 0.
 3.  I tried to implement a better hash function that reduced the time to process
     austinpowers.txt to 0.12 seconds by using primitive numbers and adding
-    characters
+    characters. Then I designed another hash function that solves the tolstoy text
+    in 1.19 seconds.
 4.  It still doesn't work as fast as the staff's solution, therefore the hash
     function needs to be improved.
